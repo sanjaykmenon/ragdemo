@@ -23,7 +23,7 @@ export async function POST(req: Request) {
         parameters: z.object({
           query: z.string().describe('The search query to find relevant financial documents'),
         }),
-        execute: async ({ query }) => {
+        execute: async ({ query }: { query: string }) => {
           try {
             // Generate embedding for the query
             const embeddingResponse = await openaiClient.embeddings.create({
@@ -33,22 +33,30 @@ export async function POST(req: Request) {
             
             const queryEmbedding = embeddingResponse.data[0].embedding;
 
-            // Search for similar documents using cosine similarity
+            // Search for similar documents using array operations
             const similarDocuments = await db
               .select({
                 id: documents.id,
                 title: documents.title,
                 content: documents.content,
                 metadata: documents.metadata,
-                similarity: sql<number>`1 - (${cosineDistance(documents.embedding, queryEmbedding)})`,
+                embedding: documents.embedding,
               })
-              .from(documents)
-              .where(gt(sql`1 - (${cosineDistance(documents.embedding, queryEmbedding)})`, 0.7))
-              .orderBy((t) => desc(t.similarity))
-              .limit(5);
+              .from(documents);
+
+            // Calculate cosine similarity in JavaScript for now
+            const documentsWithSimilarity = similarDocuments
+              .map(doc => {
+                const docEmbedding = doc.embedding as unknown as number[];
+                const similarity = calculateCosineSimilarity(queryEmbedding, docEmbedding);
+                return { ...doc, similarity };
+              })
+              .filter(doc => doc.similarity > 0.7)
+              .sort((a, b) => b.similarity - a.similarity)
+              .slice(0, 5);
 
             return {
-              documents: similarDocuments.map(doc => ({
+              documents: documentsWithSimilarity.map(doc => ({
                 id: doc.id,
                 title: doc.title,
                 content: doc.content.substring(0, 1000) + (doc.content.length > 1000 ? '...' : ''),
@@ -74,7 +82,7 @@ export async function POST(req: Request) {
           content: z.string().describe('The content of the financial document'),
           metadata: z.object({}).passthrough().optional().describe('Additional metadata about the document'),
         }),
-        execute: async ({ title, content, metadata }) => {
+        execute: async ({ title, content, metadata }: { title: string; content: string; metadata?: any }) => {
           try {
             // Generate embedding for the document content
             const embeddingResponse = await openaiClient.embeddings.create({
@@ -115,5 +123,13 @@ export async function POST(req: Request) {
     },
   });
 
-  return result.toDataStreamResponse();
+  return result.toTextStreamResponse();
+}
+
+// Helper function to calculate cosine similarity
+function calculateCosineSimilarity(vecA: number[], vecB: number[]): number {
+  const dotProduct = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
+  const magnitudeA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
+  const magnitudeB = Math.sqrt(vecB.reduce((sum, b) => sum + b * b, 0));
+  return dotProduct / (magnitudeA * magnitudeB);
 }

@@ -89,7 +89,7 @@ Content: ${text}`;
               </div>
             )}
             
-            {messages.map((message) => (
+            {messages.map((message: any) => (
               <motion.div
                 key={message.id}
                 initial={{ opacity: 0, y: 10 }}
@@ -106,7 +106,7 @@ Content: ${text}`;
                   <div className="whitespace-pre-wrap">{message.content}</div>
                   
                   {/* Display tool results */}
-                  {message.toolInvocations?.map((toolInvocation) => (
+                  {message.toolInvocations?.map((toolInvocation: any) => (
                     <div key={toolInvocation.toolCallId} className="mt-2 text-sm">
                       {toolInvocation.toolName === 'retrieveInformation' && toolInvocation.result && (
                         <div className="bg-blue-50 p-2 rounded border">
@@ -115,7 +115,7 @@ Content: ${text}`;
                             <div key={doc.id} className="mt-1 p-2 bg-white rounded border">
                               <div className="font-medium">{doc.title}</div>
                               <div className="text-xs text-gray-600">
-                                Similarity: {(doc.similarity * 100).toFixed(1)}%
+                                Similarity: {((doc.similarity || 0) * 100).toFixed(1)}%
                               </div>
                               <div className="text-sm mt-1">{doc.content}</div>
                             </div>
