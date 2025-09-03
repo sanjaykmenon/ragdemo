@@ -4,6 +4,12 @@ import { z } from 'zod';
 import { db } from '@/db';
 import { documents } from '@/db/schema';
 import { cosineDistance, desc, gt, sql } from 'drizzle-orm';
+import OpenAI from 'openai';
+
+// Initialize OpenAI client for embeddings
+const openaiClient = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 export async function POST(req: Request) {
   const { messages } = await req.json();
@@ -20,7 +26,7 @@ export async function POST(req: Request) {
         execute: async ({ query }) => {
           try {
             // Generate embedding for the query
-            const embeddingResponse = await openai.embeddings.create({
+            const embeddingResponse = await openaiClient.embeddings.create({
               model: 'text-embedding-ada-002',
               input: query,
             });
@@ -71,7 +77,7 @@ export async function POST(req: Request) {
         execute: async ({ title, content, metadata }) => {
           try {
             // Generate embedding for the document content
-            const embeddingResponse = await openai.embeddings.create({
+            const embeddingResponse = await openaiClient.embeddings.create({
               model: 'text-embedding-ada-002',
               input: content,
             });
