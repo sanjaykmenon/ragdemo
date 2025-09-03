@@ -52,7 +52,7 @@ Content: ${text}`;
             Financial Documents RAG Demo
           </h1>
           <p className="text-lg text-gray-600">
-            Upload financial documents and ask questions about them using AI-powered retrieval
+            Query financial documents with vector search and GPT-4
           </p>
         </motion.div>
 
@@ -63,7 +63,7 @@ Content: ${text}`;
               <div className="flex flex-col items-center">
                 <Upload className="w-8 h-8 text-gray-400 mb-2" />
                 <span className="text-sm text-gray-600">
-                  Click to upload financial documents (PDF, TXT, etc.)
+                  Upload financial documents (PDF, TXT, etc.)
                 </span>
               </div>
               <input
@@ -85,7 +85,7 @@ Content: ${text}`;
             {messages.length === 0 && (
               <div className="text-center text-gray-500 mt-20">
                 <FileText className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-                <p>Start by uploading some financial documents or asking a question!</p>
+                <p>Upload documents or ask questions to get started</p>
               </div>
             )}
             
@@ -127,7 +127,7 @@ Content: ${text}`;
                         <div className="bg-green-50 p-2 rounded border">
                           {toolInvocation.result.success ? (
                             <span className="text-green-700">
-                              ✓ Document added successfully: {toolInvocation.result.document?.title}
+                              ✓ Document added: {toolInvocation.result.document?.title}
                             </span>
                           ) : (
                             <span className="text-red-700">
@@ -150,7 +150,7 @@ Content: ${text}`;
               >
                 <div className="bg-gray-100 text-gray-900 px-4 py-2 rounded-lg flex items-center">
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                  Thinking...
+                  Processing...
                 </div>
               </motion.div>
             )}
@@ -184,7 +184,7 @@ Content: ${text}`;
           transition={{ duration: 0.5, delay: 0.2 }}
           className="mt-8 bg-white rounded-lg shadow-lg border border-gray-200 p-6"
         >
-          <h3 className="text-lg font-semibold mb-4">Sample Questions to Try:</h3>
+          <h3 className="text-lg font-semibold mb-4">Example questions:</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {[
               "What are the key financial metrics in the latest quarterly report?",
