@@ -1,18 +1,17 @@
 # Financial Documents RAG Demo
 
-A Next.js application that uses Retrieval-Augmented Generation (RAG) to answer questions about financial documents. Built with OpenAI's GPT-4 and embeddings, PostgreSQL for vector storage, and a modern UI.
+Next.js app for querying financial documents using RAG. Uses GPT-4 for chat, OpenAI embeddings for search, and PostgreSQL for vector storage.
 
-## Features
+## What it does
 
-- **AI Chat**: Ask questions about your financial documents using GPT-4
-- **Document Upload**: Upload financial documents (PDF, TXT, CSV, DOCX)
-- **Vector Search**: Find relevant information using embeddings
-- **PostgreSQL Storage**: Store document embeddings in PostgreSQL
-- **Modern UI**: Clean interface with animations
-- **Streaming Responses**: Real-time AI response streaming
-- **Free Hosting**: Deploy on Vercel with Neon PostgreSQL
+- Chat interface for asking questions about financial docs
+- Document upload (PDF, TXT, CSV, DOCX)
+- Vector similarity search with embeddings
+- PostgreSQL storage with pgvector extension
+- Streaming responses
+- Deploy on Vercel + Neon (both free tiers)
 
-## Quick Start
+## Setup
 
 ### 1. Clone and Install
 
@@ -22,19 +21,18 @@ cd ragdemo
 npm install
 ```
 
-### 2. Set up PostgreSQL Database (Neon)
+### 2. Database (Neon PostgreSQL)
 
-1. Create a free account at [Neon](https://neon.tech)
-2. Create a new project
-3. Copy your connection string: `postgresql://username:password@host/database?sslmode=require`
+1. Create account at [Neon](https://neon.tech)
+2. Create new project
+3. Copy connection string: `postgresql://username:password@host/database?sslmode=require`
 
-### 3. Get OpenAI API Key
+### 3. OpenAI API Key
 
-1. Go to [OpenAI](https://platform.openai.com/api-keys)
-2. Create a new API key
-3. Copy the key (starts with `sk-`)
+1. Get key from [OpenAI](https://platform.openai.com/api-keys)
+2. Copy the key (starts with `sk-`)
 
-### 4. Configure Environment Variables
+### 4. Environment Variables
 
 Create `.env.local`:
 
@@ -47,14 +45,14 @@ DATABASE_URL=postgresql://username:password@host/database?sslmode=require
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-### 5. Set up Database
+### 5. Database Setup
 
 ```bash
 npm run db:generate
 npm run db:migrate
 ```
 
-### 6. Initialize Sample Data
+### 6. Load Sample Data
 
 ```bash
 npm run dev
@@ -66,7 +64,7 @@ In another terminal:
 curl -X POST http://localhost:3000/api/init-docs
 ```
 
-### 7. Start Using
+### 7. Usage
 
 1. Open [http://localhost:3000](http://localhost:3000)
 2. Try questions like:
@@ -80,7 +78,7 @@ curl -X POST http://localhost:3000/api/init-docs
 ### Vercel
 
 1. Push to GitHub
-2. Import repository in [Vercel](https://vercel.com)
+2. Import in [Vercel](https://vercel.com)
 3. Add environment variables
 4. Deploy
 
@@ -91,7 +89,7 @@ src/
 ├── app/
 │   ├── api/
 │   │   ├── chat/route.ts          # Chat API with RAG
-│   │   └── init-docs/route.ts     # Sample document initialization
+│   │   └── init-docs/route.ts     # Sample doc loader
 │   ├── globals.css
 │   ├── layout.tsx
 │   └── page.tsx                   # Main chat interface
@@ -110,41 +108,41 @@ src/
 - **Animation**: Framer Motion
 - **Icons**: Lucide React
 
-## Sample Questions
+## Example Queries
 
 - "What was the revenue growth in Q3 2024?"
 - "Analyze the cash flow trends"
 - "What are the main risk factors?"
 - "Show me the balance sheet highlights"
 
-## Features
+## How it works
 
 ### Document Upload
 - Supports PDF, TXT, CSV, DOCX
-- Auto-generates embeddings
-- Stores with metadata in PostgreSQL
+- Generates embeddings automatically
+- Stores in PostgreSQL with metadata
 
-### Semantic Search
+### Search
 - OpenAI embeddings for document matching
-- Cosine similarity with configurable threshold
+- Cosine similarity with 0.7 threshold
 - Returns top 5 relevant documents
 
-### AI Chat
+### Chat
 - GPT-4 responses
-- Real-time streaming
+- Streaming output
 - Tool calling for retrieval and document addition
 
 ## Costs
 
 - **Neon**: Free tier (0.5GB storage)
 - **Vercel**: Free tier (100GB bandwidth)
-- **OpenAI**: Pay-per-use (embeddings ~$0.0001/1K tokens)
+- **OpenAI**: Pay-per-use (~$0.0001/1K tokens for embeddings)
 
 ## Troubleshooting
 
 ### Database Issues
 - Check DATABASE_URL format
-- Verify Neon database is active
+- Verify Neon database is running
 - Ensure SSL mode in connection string
 
 ### OpenAI Issues
@@ -159,12 +157,8 @@ src/
 
 ## Contributing
 
-Standard fork/PR workflow. Test locally before submitting.
+Fork, make changes, submit PR. Test locally first.
 
 ## License
 
 MIT
-
----
-
-Built with the Vercel AI SDK
