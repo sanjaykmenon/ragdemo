@@ -1,16 +1,16 @@
 # Financial Documents RAG Demo
 
-A Next.js application powered by the Vercel AI SDK that uses Retrieval-Augmented Generation (RAG) to answer questions about financial documents. Built with OpenAI's GPT-4 and embeddings, PostgreSQL for vector storage, and a UI with Tailwind CSS and Framer Motion.
+A Next.js application that uses Retrieval-Augmented Generation (RAG) to answer questions about financial documents. Built with OpenAI's GPT-4 and embeddings, PostgreSQL for vector storage, and a modern UI.
 
 ## Features
 
-- 🤖 **AI-Powered Chat**: Ask questions about your financial documents using GPT-4
-- 📄 **Document Upload**: Upload financial documents (PDF, TXT, CSV, DOCX)
-- 🔍 **Semantic Search**: Find relevant information using vector embeddings
-- 💾 **Vector Storage**: Store document embeddings in PostgreSQL
-- 🎨 **Beautiful UI**: Modern interface with animations and responsive design
-- ⚡ **Real-time Streaming**: Live streaming of AI responses
-- 🆓 **Free Hosting**: Deploy on Vercel with free PostgreSQL from Neon
+- **AI Chat**: Ask questions about your financial documents using GPT-4
+- **Document Upload**: Upload financial documents (PDF, TXT, CSV, DOCX)
+- **Vector Search**: Find relevant information using embeddings
+- **PostgreSQL Storage**: Store document embeddings in PostgreSQL
+- **Modern UI**: Clean interface with animations
+- **Streaming Responses**: Real-time AI response streaming
+- **Free Hosting**: Deploy on Vercel with Neon PostgreSQL
 
 ## Quick Start
 
@@ -22,11 +22,11 @@ cd ragdemo
 npm install
 ```
 
-### 2. Set up Free PostgreSQL Database (Neon)
+### 2. Set up PostgreSQL Database (Neon)
 
-1. Go to [Neon](https://neon.tech) and create a free account
+1. Create a free account at [Neon](https://neon.tech)
 2. Create a new project
-3. Copy your connection string (it looks like: `postgresql://username:password@host/database?sslmode=require`)
+3. Copy your connection string: `postgresql://username:password@host/database?sslmode=require`
 
 ### 3. Get OpenAI API Key
 
@@ -36,22 +36,18 @@ npm install
 
 ### 4. Configure Environment Variables
 
-Create a `.env.local` file in the root directory:
+Create `.env.local`:
 
 ```bash
-# Required: OpenAI API Key
+# Required
 OPENAI_API_KEY=sk-your-openai-api-key-here
-
-# Required: Neon PostgreSQL Connection String
 DATABASE_URL=postgresql://username:password@host/database?sslmode=require
 
-# Optional: For production deployment
+# Optional
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 ### 5. Set up Database
-
-Generate and run the database migration:
 
 ```bash
 npm run db:generate
@@ -60,37 +56,33 @@ npm run db:migrate
 
 ### 6. Initialize Sample Data
 
-Start the development server and initialize sample financial documents:
-
 ```bash
 npm run dev
 ```
 
-Then in another terminal, initialize sample documents:
+In another terminal:
 
 ```bash
 curl -X POST http://localhost:3000/api/init-docs
 ```
 
-### 7. Start Using the App
+### 7. Start Using
 
 1. Open [http://localhost:3000](http://localhost:3000)
-2. Try asking questions like:
-   - "What are the key financial metrics from Q3 2024?"
-   - "What are the main risk factors mentioned?"
-   - "Show me information about cash flow"
-3. Upload your own financial documents to expand the knowledge base
+2. Try questions like:
+   - "What are the Q3 2024 financial metrics?"
+   - "What are the main risk factors?"
+   - "Show me cash flow information"
+3. Upload your own documents
 
 ## Deployment
 
-### Deploy to Vercel (Free)
+### Vercel
 
-1. Push your code to GitHub
-2. Go to [Vercel](https://vercel.com) and import your repository
-3. Add the same environment variables from your `.env.local` file
-4. Deploy!
-
-Your app will be live at `https://your-app.vercel.app`
+1. Push to GitHub
+2. Import repository in [Vercel](https://vercel.com)
+3. Add environment variables
+4. Deploy
 
 ## Project Structure
 
@@ -98,90 +90,81 @@ Your app will be live at `https://your-app.vercel.app`
 src/
 ├── app/
 │   ├── api/
-│   │   ├── chat/route.ts          # Main chat API with RAG
-│   │   └── init-docs/route.ts     # Initialize sample documents
-│   ├── globals.css                # Global styles
-│   ├── layout.tsx                 # Root layout
+│   │   ├── chat/route.ts          # Chat API with RAG
+│   │   └── init-docs/route.ts     # Sample document initialization
+│   ├── globals.css
+│   ├── layout.tsx
 │   └── page.tsx                   # Main chat interface
 ├── db/
 │   ├── index.ts                   # Database connection
 │   └── schema.ts                  # Database schema
-drizzle.config.ts                  # Drizzle ORM configuration
-package.json                       # Dependencies and scripts
 ```
 
-## Technology Stack
+## Tech Stack
 
-- **Framework**: Next.js 15 with App Router
-- **AI**: Vercel AI SDK with OpenAI GPT-4
-- **Database**: PostgreSQL (Neon) with Drizzle ORM
+- **Framework**: Next.js 15
+- **AI**: Vercel AI SDK + OpenAI GPT-4
+- **Database**: PostgreSQL (Neon) + Drizzle ORM
 - **Embeddings**: OpenAI text-embedding-ada-002
 - **Styling**: Tailwind CSS
 - **Animation**: Framer Motion
 - **Icons**: Lucide React
-- **Hosting**: Vercel (free tier)
 
-## Sample Questions to Try
+## Sample Questions
 
 - "What was the revenue growth in Q3 2024?"
 - "Analyze the cash flow trends"
 - "What are the main risk factors?"
 - "Show me the balance sheet highlights"
-- "What's the company's liquidity position?"
 
-## Features in Detail
+## Features
 
 ### Document Upload
-- Supports PDF, TXT, CSV, and DOCX files
-- Automatically generates embeddings for uploaded content
-- Stores documents with metadata in PostgreSQL
+- Supports PDF, TXT, CSV, DOCX
+- Auto-generates embeddings
+- Stores with metadata in PostgreSQL
 
 ### Semantic Search
-- Uses OpenAI embeddings to find relevant document sections
-- Cosine similarity matching with configurable threshold
-- Returns top 5 most relevant documents per query
+- OpenAI embeddings for document matching
+- Cosine similarity with configurable threshold
+- Returns top 5 relevant documents
 
-### AI Chat Interface
-- Powered by GPT-4 for intelligent responses
-- Real-time streaming of responses
-- Tool calling for document retrieval and addition
-- Beautiful animated UI with loading states
+### AI Chat
+- GPT-4 responses
+- Real-time streaming
+- Tool calling for retrieval and document addition
 
-## Cost Considerations
+## Costs
 
-- **Neon PostgreSQL**: Free tier includes 0.5GB storage, 1 database
-- **Vercel Hosting**: Free tier includes 100GB bandwidth, hobby projects
-- **OpenAI API**: Pay-per-use (embeddings ~$0.0001/1K tokens, GPT-4 varies)
+- **Neon**: Free tier (0.5GB storage)
+- **Vercel**: Free tier (100GB bandwidth)
+- **OpenAI**: Pay-per-use (embeddings ~$0.0001/1K tokens)
 
 ## Troubleshooting
 
-### Database Connection Issues
-- Ensure your DATABASE_URL is correct
-- Check that your Neon database is active
-- Verify SSL mode is included in connection string
+### Database Issues
+- Check DATABASE_URL format
+- Verify Neon database is active
+- Ensure SSL mode in connection string
 
-### OpenAI API Issues
-- Confirm your API key is valid and has credits
-- Check rate limits on your OpenAI account
-- Ensure OPENAI_API_KEY environment variable is set
+### OpenAI Issues
+- Verify API key and credits
+- Check rate limits
+- Confirm OPENAI_API_KEY is set
 
-### Build/Deploy Issues
-- Run `npm run build` locally to check for errors
-- Ensure all environment variables are set in Vercel
-- Check Vercel function logs for runtime errors
+### Build Issues
+- Run `npm run build` locally first
+- Check environment variables in Vercel
+- Review function logs for errors
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+Standard fork/PR workflow. Test locally before submitting.
 
 ## License
 
-MIT License - feel free to use this project for your own financial document analysis needs!
+MIT
 
 ---
 
-Built with ❤️ using the Vercel AI SDK
+Built with the Vercel AI SDK
